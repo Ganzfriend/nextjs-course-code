@@ -20,8 +20,29 @@ const DUMMY_MEETUPS = [
   },
 ];
 
-const HomePage = () => {
-  return <MeetupList meetups={DUMMY_MEETUPS} />;
+const HomePage = ({ meetups }) => {
+  /* the state and useEffect are no longer necessary now that we have the getStaticProps function returning the meetups data we need, passed in as a prop */
+  /* this moves data fetching away from the client side, to the build process */
+  // const [loadedMeetups, setLoadedMeetups] = useState([]);
+  // useEffect(() => {
+  //   // send http request and fetch data
+  //   setLoadedMeetups(DUMMY_MEETUPS);
+  // }, []);
+
+  return <MeetupList meetups={meetups} />;
 };
+
+// exporting this function (which has to be named such) allows for the server to fetch the data (props) and resolving the Promise, before the rest of the component renders, rather than waiting for this to be done through useEffect
+// now this component can be rendered already with the required data present
+export async function getStaticProps() {
+  // this code never executes on the client side, but during the build process
+  // it never executes on the machines of the visitors
+  // e.g. fetch data from an API
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
+  };
+}
 
 export default HomePage;
