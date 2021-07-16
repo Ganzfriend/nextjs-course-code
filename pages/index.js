@@ -34,14 +34,19 @@ const HomePage = ({ meetups }) => {
 
 // exporting this function (which has to be named such) allows for the server to fetch the data (props) and resolving the Promise, before the rest of the component renders, rather than waiting for this to be done through useEffect
 // now this component can be rendered already with the required data present
+// one of the main features of NextJS is this data fetching for pre-rendering
 export async function getStaticProps() {
   // this code never executes on the client side, but during the build process
   // it never executes on the machines of the visitors
   // e.g. fetch data from an API
+
+  // use the revalidate property in the return object in order to use incremental static generation
+  // used to update data from database, rather than using same static page that was built on last production build
   return {
     props: {
       meetups: DUMMY_MEETUPS,
     },
+    revalidate: 10, // NextJS will now wait 10 seconds till it regenerates this page for an incoming request, so it's generated not just during the build process, but also every few seconds on the server (if there are requests for this page)
   };
 }
 
