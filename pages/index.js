@@ -50,4 +50,21 @@ export async function getStaticProps() {
   };
 }
 
+/* alternative to getStaticProps() */
+export async function getServerSideProps(context) {
+  // here, you can access all the request headers, body, authentication tokens, cookies, etc.
+  const {req. res} = context;
+
+  // this function doesn't run during build process
+  // it runs on the server after deployment
+  // still for fetching data from an API or file system
+  // this always runs on server, not client
+  // here, you can run serverside code and perform operations that use credentials that should not be exposed to your users, because it only runs on the server
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    }, // revalidating isn't necessary b/c this function runs for every incoming request anyway, so there's no need to revalidate every X seconds
+  };
+}
+
 export default HomePage;
