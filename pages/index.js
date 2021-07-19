@@ -51,6 +51,8 @@ export async function getStaticProps() {
 }
 
 /* alternative to getStaticProps() */
+
+/*
 export async function getServerSideProps(context) {
   // here, you can access all the request headers, body, authentication tokens, cookies, etc.
   const {req. res} = context;
@@ -65,6 +67,10 @@ export async function getServerSideProps(context) {
       meetups: DUMMY_MEETUPS,
     }, // revalidating isn't necessary b/c this function runs for every incoming request anyway, so there's no need to revalidate every X seconds
   };
+
 }
+*/
+
+/* CONCLUSION: If you don't have data that changes multiple times every few seconds and/or need accesss to the request object, like for authentication info, getStaticProps is better because you don't have to wait for your page to be generated on every incoming request. Instead, you pre-generate an HTML file, which can be stored by and served by a CDN, and fetching that is faster because then it can be cached and reused.  */
 
 export default HomePage;
